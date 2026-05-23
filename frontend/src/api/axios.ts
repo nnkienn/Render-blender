@@ -1,6 +1,10 @@
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8001";
+const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+const API_BASE_URL = configuredApiBaseUrl || "/api";
+const API_ORIGIN = configuredApiBaseUrl
+  ? new URL(configuredApiBaseUrl).origin
+  : window.location.origin;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -18,7 +22,7 @@ export const buildAssetUrl = (path: string) => {
     return path;
   }
 
-  return `${API_BASE_URL}${path}`;
+  return `${API_ORIGIN}${path}`;
 };
 
 export default api;
